@@ -28,7 +28,7 @@ if [[ "$NETWORKS" -eq 0 ]]; then
     ${MGR_SSH} docker network create -d overlay api_service-discovery-network
 fi
 
-# Login to DockerHub
+# Login to DockerHub...
 ${MGR_SSH} docker login -u $DOCKER_USER -p $DOCKER_PASS
 
 SERVICE_ID=$(${MGR_SSH} docker service ls --filter name=${SERVICE_NAME} -q)
