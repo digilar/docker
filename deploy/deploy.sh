@@ -28,12 +28,12 @@ echo "--- MGR_SSH: ${MGR_SSH} ---"
 
 # Create overlay network for default service discovery (if it doesn't already exist)
 ALL_NETWORKS=$(${MGR_SSH} docker network ls)
-echo "All networks: ${ALL_NETWORKS}"
+echo "${ALL_NETWORKS}"
 
-NETWORKS=$(${MGR_SSH} docker network ls --filter name=service-discovery-network --quiet | wc -l)
+NETWORKS=$(${MGR_SSH} docker network ls --filter name=api_service-discovery-network --quiet | wc -l)
 if [[ "$NETWORKS" -eq 0 ]]; then
-	echo "Network service-discovery-network not found, creating..."
-    ${MGR_SSH} docker network create -d overlay service-discovery-network
+	echo "Network api_service-discovery-network not found, creating..."
+    ${MGR_SSH} docker network create -d overlay api_service-discovery-network
 fi
 
 SERVICE_ID=$(${MGR_SSH} docker service ls --filter name=${SERVICE_NAME} -q)
@@ -51,7 +51,7 @@ else
   echo "Creating service: ${SERVICE_NAME}..."
   ${MGR_SSH} docker service create \
                 --name ${SERVICE_NAME} \
-                --network service-discovery-network \
+                --network api_service-discovery-network \
                 --publish ${PORTS} \
                 --with-registry-auth \
                 --detach=false \
