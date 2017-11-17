@@ -27,6 +27,9 @@ rc=$?; if [[ $rc != 0 ]]; then exit $rc; fi
 echo "--- MGR_SSH: ${MGR_SSH} ---"
 
 # Create overlay network for default service discovery (if it doesn't already exist)
+ALL_NETWORKS=$(${MGR_SSH} docker network ls --quiet | wc -l)
+echo "All networks: ${ALL_NETWORKS}"
+
 NETWORKS=$(${MGR_SSH} docker network ls --filter name=service-discovery-network --quiet | wc -l)
 if [[ "$NETWORKS" -eq 0 ]]; then
 	echo "Network service-discovery-network not found, creating..."
