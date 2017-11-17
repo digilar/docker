@@ -25,10 +25,6 @@ fi
 rc=$?; if [[ $rc != 0 ]]; then exit $rc; fi
 
 echo "--- MGR_SSH: ${MGR_SSH} ---"
-echo "Logging cluster manager into ECR..."
-# remove deprecated -e option from 'docker login' returned by 'aws ecr get-login' (produces a warning o/w)
-${MGR_SSH} eval $(aws ecr get-login --region eu-central-1 --no-include-email)
-rc=$?; if [[ $rc != 0 ]]; then exit $rc; fi
 
 # Create overlay network for default service discovery (if it doesn't already exist)
 NETWORKS=$(${MGR_SSH} docker network ls --filter name=service-discovery-network --quiet | wc -l)
