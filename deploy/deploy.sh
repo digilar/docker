@@ -39,7 +39,6 @@ then
   ${MGR_SSH} docker service update \
                 --image ${FULL_IMAGE_NAME} \
                 --with-registry-auth \
-                --env-file=.env \
                 --detach=false \
                   ${SERVICE_NAME}
   rc=$?; if [[ $rc != 0 ]]; then exit $rc; fi
