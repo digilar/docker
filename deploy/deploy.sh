@@ -31,6 +31,8 @@ fi
 # Login to DockerHub...
 ${MGR_SSH} docker login -u $DOCKER_USER -p $DOCKER_PASS
 
+ls -a -l
+
 SERVICE_ID=$(${MGR_SSH} docker service ls --filter name=${SERVICE_NAME} -q)
 rc=$?; if [[ $rc != 0 ]]; then exit $rc; fi
 if [[ -n "$SERVICE_ID" ]]
