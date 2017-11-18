@@ -31,8 +31,6 @@ fi
 # Login to DockerHub...
 ${MGR_SSH} docker login -u $DOCKER_USER -p $DOCKER_PASS
 
-ls -a -l
-
 SERVICE_ID=$(${MGR_SSH} docker service ls --filter name=${SERVICE_NAME} -q)
 rc=$?; if [[ $rc != 0 ]]; then exit $rc; fi
 if [[ -n "$SERVICE_ID" ]]
@@ -51,7 +49,6 @@ else
                 --network api_service-discovery-network \
                 --publish ${PORTS} \
                 --with-registry-auth \
-                --env-file="env.txt" \
                 --detach=false \
                 ${FULL_IMAGE_NAME}
   rc=$?; if [[ $rc != 0 ]]; then exit $rc; fi
