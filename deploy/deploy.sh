@@ -38,7 +38,7 @@ then
   echo "Service: ${SERVICE_NAME} exists. Updating it with new image..."
   ${MGR_SSH} docker service update \
                 --image ${FULL_IMAGE_NAME} \
-                 --with-registry-auth \
+                --with-registry-auth \
                 --detach=false \
                   ${SERVICE_NAME}
   rc=$?; if [[ $rc != 0 ]]; then exit $rc; fi
@@ -49,6 +49,7 @@ else
                 --network api_service-discovery-network \
                 --publish ${PORTS} \
                 --with-registry-auth \
+                --env-file="~/.env" \
                 --detach=false \
                 ${FULL_IMAGE_NAME}
   rc=$?; if [[ $rc != 0 ]]; then exit $rc; fi
