@@ -49,6 +49,7 @@ else
                 --network api_service-discovery-network \
                 --publish ${PORTS} \
                 --with-registry-auth \
+                --env-file="~/.env" \
                 --detach=false \
                 ${FULL_IMAGE_NAME}
   rc=$?; if [[ $rc != 0 ]]; then exit $rc; fi
