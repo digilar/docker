@@ -36,6 +36,7 @@ const fs = require('fs');
 const aws = require('aws-sdk');
 const s3 = new aws.S3({
 	// The .trim() is just an extra precaution to make sure we never get any line feeds etc when reading secrets
+	// NOTE!!! If we use the VPC bucket policy strategy decribed in the first option below these are not needed
 	accessKeyId: fs.readFile('/run/secrets/aws_access_key_id’, 'utf8').trim(), 
 	secretAccessKey:fs.readFile('/run/secrets/aws_secret_access_key’, 'utf8').trim()
 });
@@ -55,12 +56,16 @@ s3.getObject(getParams, function(err, data) {
 });
 ~~~~
 
+__How to access S3 from the Swarm with bucket policies (OPTION 1) RECOMMENDED__ 
 
-__How to access S3 from the Swarm__
+This is solution 1 the bootstrap problem… IF the S3 bucket is not public (and possibly not even on the same AWS VPC) then we must __let requests come through using the AWS access policy given in the digilar-properties-bucket.policy file__. Note that in order for this to work when running locally on Docker for Mac IP-filters must be specified in the policy.
+(It can be debated whether properties such as user name, connection pool configs etc really are secret, but if we keep all config in the same file we can handle everything the same, again for simplicity.)
 
-This is the bootstrap problem… IF the S3 bucket is not public and not on the same AWS VPC then we (most likely) need at least these secrets.
-It is possible that one can relax the security and let requests come through is we’re on the same VPC (using some AWS access policy) without  the credentials but this will not work when running locally on Docker for Mac. But at least these secret are likely rotated very seldom and they really are secrets.
-It can be debated whether properties such as user name, connection pool configs etc really are secret, but if we keep all config in the same file we can handle everything the same, again for simplicity.
+__How to access S3 from the Swarm with secrets (OPTION 2)__ 
+
+This is solution 2 to the bootstrap problem… IF the S3 bucket is not public and not on the same AWS VPC then we (most likely) need at least these secrets.
+But at least these secret are likely rotated very seldom and they really are secrets.
+
 
 
 __Deploying Services__
@@ -70,7 +75,7 @@ From the deploy.sh script we need to add:
 ~~~~
 docker service create \
 	--name my_service \
-	--secret aws_access_key_id \ <— Gives my_service access to the secret aws_access_key_id
+	--secret aws_access_key_id \ <— Gives my_service access to the secret aws_access_key_id (ONLY NEEDED FOR OPTION 2)
 	--secret aws_secret_access_key \
 	--env MY_BUCKET_NAME=my_bucket \
 	--env MY_PROPS_FILE=my_service.json.dev \
@@ -91,7 +96,7 @@ services:
        MY_PROPS_FILE: my_service.json.prod <-- Note that we use a different file here
        
    secrets:
-        - aws_access_key_id
+        - aws_access_key_id <— Gives my_service access to the secret aws_access_key_id (ONLY NEEDED FOR OPTION 2)
         - aws_secret_access_key
 
 
@@ -102,7 +107,7 @@ services:
 
 secrets:
    aws_access_key_id:
-        external: true	<— Secret MUST already exist in swarm for deploy to succeed
+        external: true	<— Secret MUST already exist in swarm for deploy to succeed (ONLY NEEDED FOR OPTION 2)
    aws_secret_access_key:
         external: true
 ~~~~
