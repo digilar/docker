@@ -29,6 +29,8 @@ if [[ "$NETWORKS" -eq 0 ]]; then
     ${MGR_SSH} docker network create -d overlay api_service-discovery-network
 fi
 
+echo "env-file: ${ENV_FILE}"
+
 # Login to DockerHub...
 ${MGR_SSH} docker login -u $DOCKER_USER -p $DOCKER_PASS
 
