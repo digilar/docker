@@ -11,6 +11,7 @@ DOCKER_PASS=$3 # Docker Hub Password
 SERVICE_NAME=$4 # The name to use for the service on the overlay network
 PORTS=$5 # The port mapping for external exposure for the service
 FULL_IMAGE_NAME=$6 # The full image name to deploy (in our case prefixed with the private ECR repo name)
+ENV_FILE=$7
 
 echo ""
 echo "----- Deploying: $SERVICE_NAME to AWS docker swarm with manager node: $MGR_DNS_NAME -----"
@@ -49,7 +50,7 @@ else
                 --network api_service-discovery-network \
                 --publish ${PORTS} \
                 --with-registry-auth \
-                --env-file="~/.env" \
+                --env ENV_FILE=${ENV_FILE} \
                 --detach=false \
                 ${FULL_IMAGE_NAME}
   rc=$?; if [[ $rc != 0 ]]; then exit $rc; fi
