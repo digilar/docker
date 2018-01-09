@@ -112,4 +112,65 @@ secrets:
         external: true
 ~~~~
 
+__Docker GUI for TEST/INTEGRATION ENVS__
 
+[Portainer](https://portainer.io) can easily be deployed/undeployed (preferably as a service as below) to any Docker Swarm.
+
+NOTE: the portainer service needs to run on a manager node, hence the manager constraint:
+~~~
+--constraint 'node.role == manager'
+~~~
+
+Portainer gives us a visual overview and most things that can be done via the GUI.
+HOWEVER, __don't__ let the GUI trick you into start to __configure things manually__...
+We still want all config to go into git in the form of versioned Dockerfiles/stackfiles.
+We allow for some env variables on S3 for runtime secrets (see the section above) and some buld/deploy time
+env variables on CircleCI, but really that should be kept to the bare minimum.
+
+Typically build/deploy time parameters are limited to host/port/SSH-keys/username/passwords etc for envs, dockerhub, github.
+
+Use Portainer only to get visual feedback for how Docker works and for debugging.
+Try to run commands/deploys automated and reproducible via CircleCI.
+
+Remember: Servers are __cattle, not pets__!!!
+
+~~~
+# Deploy
+docker service create \
+    --name portainer \
+    --publish 7777:9000 \
+    --constraint 'node.role == manager' \
+    --mount type=bind,src=//var/run/docker.sock,dst=/var/run/docker.sock \
+    portainer/portainer \
+    -H unix:///var/run/docker.sock
+    
+# Undeploy
+docker service rm portainer
+~~~
+
+The portainer GUI is then available on the (Docker for AWS) ELB on the selected port.
+By default portainer runs on port 9000 (internally) and needs a startup parameter in order to change that port.
+No big deal, but I see no need for it as portainer runs in a separate container with no port conflicts.
+The external port (7777 in the example) is typically what clashes with other services when exposing through the ELB.
+
+There is nothing stopping you from running portainer locally against Docker for Mac, but locally we already have kitematic so there is less need for it...
+
+__Current canary env portainer GUI access (as per 2018-01-09):__
+
+[Canary Portainer GUI](http://canary-externalloa-1nsrefs96u800-255706334.eu-central-1.elb.amazonaws.com:7777)
+
+UID: admin
+
+PW: Digilaer
+
+The first access to portainer after a deploy forces a UID/PW setup and this can of course be changed at any time.
+There is also a simple role mgmt within portainer so that more restricted access users can be added.
+But there is no need to go into that complexity for simple test envs.
+
+__Docker GUI for PRODUCTION ENVS__
+
+Other than the usual security/performance constraints there is nothing stopping us from running Portainer also in prod envs.
+But (obviously) we'd need to only allow connections over TLS with our AWS certs much like we plan on doing with all other
+services and probably not expose the port to the outside.
+
+__More thought__ is __needed before__ portainer (or any equivalent) is deployed to a __prod__ env. 
