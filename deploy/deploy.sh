@@ -43,6 +43,7 @@ then
                 --image ${FULL_IMAGE_NAME} \
                 --with-registry-auth \
                 --detach=false \
+                --replicas=3 \
                   ${SERVICE_NAME}
   rc=$?; if [[ $rc != 0 ]]; then exit $rc; fi
 else
@@ -54,6 +55,7 @@ else
                 --with-registry-auth \
                 --env ENV_FILE=${ENV_FILE} \
                 --detach=false \
+                --replicas=3 \
                 ${FULL_IMAGE_NAME}
   rc=$?; if [[ $rc != 0 ]]; then exit $rc; fi
 fi
