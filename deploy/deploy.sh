@@ -44,6 +44,7 @@ then
                 --with-registry-auth \
                 --detach=false \
                 --replicas=3 \
+                --update-parallelism=1 \
                   ${SERVICE_NAME}
   rc=$?; if [[ $rc != 0 ]]; then exit $rc; fi
 else
@@ -56,6 +57,7 @@ else
                 --env ENV_FILE=${ENV_FILE} \
                 --detach=false \
                 --replicas=3 \
+                --update-parallelism=1 \
                 ${FULL_IMAGE_NAME}
   rc=$?; if [[ $rc != 0 ]]; then exit $rc; fi
 fi
