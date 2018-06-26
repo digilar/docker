@@ -6,8 +6,6 @@ ECS_REGION=$1   # AWS region to deploy to
 ECR_NAME=$2     # Name of the service/application
 ENVIRONMENT=$3  # Name of the environment (e.g. canary, staging, production)
 HASH=$4         # Hash for the image version (e.g git commit hash)
-COMMAND=$5
-
 
 [[ -z "$ECR_NAME" ]] && { echo "must pass a name" ; exit 1; }
 [[ -z "$ENVIRONMENT" ]] && { echo "must pass an environment" ; exit 1; }
@@ -29,6 +27,8 @@ ECS_TASK_DEFINITION_NAME=$(getParameter "$ECR_NAME" "ECS_TASK_DEFINITION_NAME")
 ECS_SERVICE_NAME=$(getParameter "$ECR_NAME" "ECS_SERVICE_NAME")
 
 PORT=$(getParameter "$ECR_NAME" "PORT")
+
+COMMAND=$(getParameter "$ECR_NAME" "COMMAND")
 
 TASK_CPU=$(getParameter "$ECR_NAME" "TASK_CPU")
 TASK_MEMORY=$(getParameter "$ECR_NAME" "TASK_MEMORY")
