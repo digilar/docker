@@ -40,6 +40,12 @@ TASK_ROLE_ARN=$(getParameter "$ECR_NAME" "TASK_ROLE_ARN")
 
 VERSION=$ENVIRONMENT-$HASH
 
+echo "----- Deploying: $ECR_NAME to AWS Elastic Container Service -----"
+echo "CPU: $TASK_CPU"
+echo "MEM: $TASK_MEMORY"
+echo "TYPE: $LAUNCH_TYPE"
+echo "MODE: $NETWORK_MODE"
+
 aws configure set default.region $ECS_REGION
 
 # Authenticate against ECR
