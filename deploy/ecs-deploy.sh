@@ -40,7 +40,7 @@ TASK_ROLE_ARN=$(getParameter "$ECR_NAME" "TASK_ROLE_ARN")
 
 VERSION=$ENVIRONMENT-$HASH
 
-echo "----- Deploying: $ECR_NAME to AWS Elastic Container Service -----"
+echo "----- Deploying: $ECR_NAME to cluster: $ECS_CLUSTER_NAME -----"
 echo "CPU: $TASK_CPU"
 echo "MEM: $TASK_MEMORY"
 echo "TYPE: $LAUNCH_TYPE"
