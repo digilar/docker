@@ -53,8 +53,12 @@ eval $(aws ecr get-login --no-include-email)
 
 # Build and push the image
 docker build -t $ECR_NAME .
+
 docker tag $ECR_NAME:latest $AWS_ACCOUNT_ID.dkr.ecr.$ECS_REGION.amazonaws.com/$ECR_NAME:$VERSION
+docker tag $ECR_NAME:latest $AWS_ACCOUNT_ID.dkr.ecr.$ECS_REGION.amazonaws.com/$ECR_NAME:latest
+
 docker push $AWS_ACCOUNT_ID.dkr.ecr.$ECS_REGION.amazonaws.com/$ECR_NAME:$VERSION
+docker push $AWS_ACCOUNT_ID.dkr.ecr.$ECS_REGION.amazonaws.com/$ECR_NAME:latest
 
 task_template='[
   {
