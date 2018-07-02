@@ -45,6 +45,8 @@ echo "CPU: $TASK_CPU"
 echo "MEM: $TASK_MEMORY"
 echo "TYPE: $LAUNCH_TYPE"
 echo "MODE: $NETWORK_MODE"
+echo "ACCOUNT ID: $AWS_ACCOUNT_ID"
+echo "SERVICE: $ECS_SERVICE_NAME"
 
 aws configure set default.region $ECS_REGION
 
