@@ -79,7 +79,9 @@ task_template='[
       }
     ],
     "environment" : [
-      { "name" : "ENVIRONMENT", "value" : "%s" }
+      { "name" : "ENVIRONMENT", "value" : "%s" },
+      { "name" : "NAME", "value" : "%s" },
+      { "name" : "VERSION", "value" : "%s" }
     ],
     "logConfiguration": {
         "logDriver": "awslogs",
@@ -100,7 +102,7 @@ task_template='[
   }
 ]'
 
-task_def=$(printf "$task_template" $ECR_NAME $AWS_ACCOUNT_ID $ECS_REGION $ECR_NAME $VERSION $TASK_CPU $TASK_MEMORY $TASK_MEMORY_RESERVATION $PORT $PORT $ENVIRONMENT $LOG_GROUP $ECS_REGION $LOG_PREFIX $ECR_NAME $COMMAND)
+task_def=$(printf "$task_template" $ECR_NAME $AWS_ACCOUNT_ID $ECS_REGION $ECR_NAME $VERSION $TASK_CPU $TASK_MEMORY $TASK_MEMORY_RESERVATION $PORT $PORT $ENVIRONMENT $ECR_NAME $VERSION $LOG_GROUP $ECS_REGION $LOG_PREFIX $ECR_NAME $COMMAND)
 
 echo "Register task definition:"
 echo "$task_def"
