@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ECS_REGION=$1   # AWS region to deploy to
+ECS_REGION=$1   # AWS region where parameters can be found
 ENVIRONMENT=$2  # Name of the environment (e.g. canary, staging, production)
 ECR_NAME=$3     # Name of the service/application
 
