@@ -4,9 +4,8 @@ ECS_REGION=$1   # AWS region to deploy to
 ENVIRONMENT=$2  # Name of the environment (e.g. canary, staging, production)
 ECR_NAME=$3     # Name of the service/application
 
-echo "----- Deploying: $ECR_NAME to bucket: $AWS_BUCKET -----"
-echo "AWS_DISTRIBUTION: $AWS_DISTRIBUTION"
-echo "AWS_REGION: $AWS_REGION"
+echo "----- Deploying: $ECR_NAME in $ENVIRONMENT -----"
+echo "Region: $ECS_REGION"
 
 [[ -z "$ECS_REGION" ]] && { echo "must pass a region" ; exit 1; }
 [[ -z "$ECR_NAME" ]] && { echo "must pass a name" ; exit 1; }
