@@ -4,9 +4,6 @@ ECS_REGION=$1   # AWS region to deploy to
 ENVIRONMENT=$2  # Name of the environment (e.g. canary, staging, production)
 ECR_NAME=$3     # Name of the service/application
 
-echo "----- Deploying: $ECR_NAME in $ENVIRONMENT -----"
-echo "Region: $ECS_REGION"
-
 [[ -z "$ECS_REGION" ]] && { echo "must pass a region" ; exit 1; }
 [[ -z "$ECR_NAME" ]] && { echo "must pass a name" ; exit 1; }
 [[ -z "$ENVIRONMENT" ]] && { echo "must pass an environment" ; exit 1; }
@@ -29,12 +26,12 @@ export CLIENT_ID=$(getParameter "$ECR_NAME" "CLIENT_ID")
 export CLIENT_SECRET=$(getParameter "$ECR_NAME" "CLIENT_SECRET")
 
 # For single environment
-if [ "$ECR_NAME" = "arch-cms"]
+if [ "$ECR_NAME" = "arch-cms" ]
 then 
   export BABEL_ENDPOINT=$(getParameter "$ECR_NAME" "BABEL_ENDPOINT")
 fi 
 
-if [ "$ECR_NAME" = "babel-app"]
+if [ "$ECR_NAME" = "babel-app" ]
 then 
   export ZENDESK_KEY=$(getParameter "$ECR_NAME" "ZENDESK_KEY")
 fi 
