@@ -25,9 +25,6 @@ export AWS_DISTRIBUTION=$(getParameter "$ECR_NAME" "CLOUDFRONT_DISTRIBUTION")
 export AWS_BUCKET=$(getParameter "$ECR_NAME" "S3_BUCKET")
 export AWS_REGION=$(getParameter "$ECR_NAME" "S3_REGION")
 
-export AWS_ACCESS_KEY_ID=$(getParameter "$ECR_NAME" "S3_ACCESS_KEY_ID")
-export AWS_SECRET_ACCESS$(getParameter "$ECR_NAME" "S3_SECRET_ACCESS_KEY")
-
 export CLIENT_ID=$(getParameter "$ECR_NAME" "CLIENT_ID")
 export CLIENT_SECRET=$(getParameter "$ECR_NAME" "CLIENT_SECRET")
 
