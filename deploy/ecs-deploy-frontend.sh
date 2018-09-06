@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 ECS_REGION=$1   # AWS region where parameters can be found
 ENVIRONMENT=$2  # Name of the environment (e.g. canary, staging, production)
@@ -8,7 +8,7 @@ ECR_NAME=$3     # Name of the service/application
 [[ -z "$ECR_NAME" ]] && { echo "must pass a name" ; exit 1; }
 [[ -z "$ENVIRONMENT" ]] && { echo "must pass an environment" ; exit 1; }
 
-function getParameter {
+function getParameter() {
   local _val=$(aws ssm get-parameters --region $ECS_REGION --names "/$ENVIRONMENT/$1/$2" --with-decryption --query Parameters[0].Value)
   local _val=`echo $_val | sed -e 's/^"//' -e 's/"$//'`
   echo "$_val"
