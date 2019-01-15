@@ -34,6 +34,8 @@ fi
 if [ "$ECR_NAME" = "babel-app" ]
 then 
   export ZENDESK_KEY=$(getParameter "$ECR_NAME" "ZENDESK_KEY")
+  export EMAIL_VALIDATOR_LOCATION=$(getParameter "$ECR_NAME" "EMAIL_VALIDATOR_LOCATION")
+  export EMAIL_VALIDATOR_APIKEY=$(getParameter "$ECR_NAME" "EMAIL_VALIDATOR_APIKEY")
 fi 
 
 echo "----- Deploying: $ECR_NAME to bucket: $AWS_BUCKET -----"
