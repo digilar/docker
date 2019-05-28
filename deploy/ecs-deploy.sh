@@ -4,11 +4,18 @@ ECS_REGION=$1   # AWS region to deploy to
 ENVIRONMENT=$2  # Name of the environment (e.g. canary, staging, production)
 ECR_NAME=$3     # Name of the service/application
 HASH=$4         # Hash for the image version (e.g git commit hash)
+BASE_ENVIRONMENT=${ENVIRONMENT}
 
 [[ -z "$ECS_REGION" ]] && { echo "must pass an region" ; exit 1; }
 [[ -z "$ECR_NAME" ]] && { echo "must pass a name" ; exit 1; }
 [[ -z "$ENVIRONMENT" ]] && { echo "must pass an environment" ; exit 1; }
 [[ -z "$HASH" ]] && { echo "must pass a hash" ; exit 1; }
+
+if ["${ENVIRONMENT}" == "production" ]
+then
+  ENVIRONMENT=$(aws ssm get-parameter --region ${ECS_REGION} --names "/production/StackName" --with-decryption --query Parameter.Value)
+  ENVIRONMENT=`echo ${ENVIRONMENT} | sed -e 's/^"//' -e 's/"$//'`
+fi
 
 function getParameter() {
   local _val=$(aws ssm get-parameters --region $ECS_REGION --names "/$ENVIRONMENT/$1/$2" --with-decryption --query Parameters[0].Value)
