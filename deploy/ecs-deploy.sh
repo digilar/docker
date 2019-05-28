@@ -11,7 +11,7 @@ BASE_ENVIRONMENT=${ENVIRONMENT}
 [[ -z "$ENVIRONMENT" ]] && { echo "must pass an environment" ; exit 1; }
 [[ -z "$HASH" ]] && { echo "must pass a hash" ; exit 1; }
 
-if ["${ENVIRONMENT}" == "production" ]
+if [[ "${ENVIRONMENT}" == "production" ]]
 then
   ENVIRONMENT=$(aws ssm get-parameter --region ${ECS_REGION} --names "/production/StackName" --with-decryption --query Parameter.Value)
   ENVIRONMENT=`echo ${ENVIRONMENT} | sed -e 's/^"//' -e 's/"$//'`
