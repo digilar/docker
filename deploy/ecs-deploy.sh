@@ -13,7 +13,7 @@ BASE_ENVIRONMENT=${ENVIRONMENT}
 
 if [[ "${ENVIRONMENT}" == "production" ]]
 then
-  ENVIRONMENT=$(aws ssm get-parameter --region ${ECS_REGION} --names "/production/StackName" --with-decryption --query Parameter.Value)
+  ENVIRONMENT=$(aws ssm get-parameter --region ${ECS_REGION} --name "/production/StackName" --query Parameter.Value)
   ENVIRONMENT=`echo ${ENVIRONMENT} | sed -e 's/^"//' -e 's/"$//'`
 fi
 
