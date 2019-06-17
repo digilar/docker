@@ -3,6 +3,8 @@
 ECS_REGION=$1   # AWS region where parameters can be found
 ENVIRONMENT=$2  # Name of the environment (e.g. canary, staging, production)
 ECR_NAME=$3     # Name of the service/application
+#ROOT_ENVIRONMENT=${ENVIRONMENT}
+
 
 [[ -z "$ECS_REGION" ]] && { echo "must pass a region" ; exit 1; }
 [[ -z "$ECR_NAME" ]] && { echo "must pass a name" ; exit 1; }
@@ -24,6 +26,8 @@ export AWS_REGION=$(getParameter "$ECR_NAME" "S3_REGION")
 
 export CLIENT_ID=$(getParameter "$ECR_NAME" "CLIENT_ID")
 export CLIENT_SECRET=$(getParameter "$ECR_NAME" "CLIENT_SECRET")
+
+export ENVIRONMENT_NAME=${ENVIRONMENT}
 
 # For single environment
 if [ "$ECR_NAME" = "arch-cms" ]
