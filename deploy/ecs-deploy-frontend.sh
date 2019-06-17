@@ -3,7 +3,7 @@
 ECS_REGION=$1   # AWS region where parameters can be found
 ENVIRONMENT=$2  # Name of the environment (e.g. canary, staging, production)
 ECR_NAME=$3     # Name of the service/application
-#ROOT_ENVIRONMENT=${ENVIRONMENT}
+ROOT_ENVIRONMENT=${ENVIRONMENT}
 
 
 [[ -z "$ECS_REGION" ]] && { echo "must pass a region" ; exit 1; }
@@ -27,8 +27,6 @@ export AWS_REGION=$(getParameter "$ECR_NAME" "S3_REGION")
 export CLIENT_ID=$(getParameter "$ECR_NAME" "CLIENT_ID")
 export CLIENT_SECRET=$(getParameter "$ECR_NAME" "CLIENT_SECRET")
 
-export ENVIRONMENT_NAME=${ENVIRONMENT}
-
 # For single environment
 if [ "$ECR_NAME" = "arch-cms" ]
 then 
@@ -42,7 +40,6 @@ then
   export EMAIL_VALIDATOR_APIKEY=$(getParameter "$ECR_NAME" "EMAIL_VALIDATOR_APIKEY")
 fi 
 
-echo "Exported ENVIRONMENT_NAME: ${ENVIRONMENT_NAME}"
 echo "----- Deploying: $ECR_NAME to bucket: $AWS_BUCKET -----"
 echo "AWS_DISTRIBUTION: $AWS_DISTRIBUTION"
 echo "AWS_REGION: $AWS_REGION"
