@@ -10,8 +10,8 @@ ROOT_ENVIRONMENT=${ENVIRONMENT}
 [[ -z "$ENVIRONMENT" ]] && { echo "must pass an environment" ; exit 1; }
 
 function getParameter {
-  local _val=$(aws ssm get-parameters --region $ECS_REGION --names "/$ENVIRONMENT/$1/$2" --with-decryption --query Parameters[0].Value)
-  local _val=`echo $_val | sed -e 's/^"//' -e 's/"$//'`
+  local _val=$(aws ssm get-parameters --region ${ECS_REGION} --names "/$ENVIRONMENT/$1/$2" --with-decryption --query Parameters[0].Value)
+  local _val=`echo ${_val} | sed -e 's/^"//' -e 's/"$//'`
   echo "$_val"
 }
 
@@ -26,15 +26,11 @@ export AWS_REGION=$(getParameter "$ECR_NAME" "S3_REGION")
 export CLIENT_ID=$(getParameter "$ECR_NAME" "CLIENT_ID")
 export CLIENT_SECRET=$(getParameter "$ECR_NAME" "CLIENT_SECRET")
 
-export ENVIRONMENT_NAME=${ENVIRONMENT}
+export ENVIRONMENT_NAME=${ROOT_ENVIRONMENT}
+export BABEL_ENDPOINT=$(getParameter "common" "BABEL_ENDPOINT")
 
-# For single environment
-if [ "$ECR_NAME" = "arch-cms" ]
-then 
-  export BABEL_ENDPOINT=$(getParameter "$ECR_NAME" "BABEL_ENDPOINT")
-fi 
 
-if [ "$ECR_NAME" = "babel-app" ]
+if [[ "$ECR_NAME" = "babel-app" ]]
 then 
   export ZENDESK_KEY=$(getParameter "$ECR_NAME" "ZENDESK_KEY")
   export EMAIL_VALIDATOR_LOCATION=$(getParameter "$ECR_NAME" "EMAIL_VALIDATOR_LOCATION")
@@ -46,4 +42,4 @@ echo "----- Deploying: $ECR_NAME to bucket: $AWS_BUCKET -----"
 echo "AWS_DISTRIBUTION: $AWS_DISTRIBUTION"
 echo "AWS_REGION: $AWS_REGION"
 
-ember deploy "$ENVIRONMENT" --activate
+ember deploy "$ROOT_ENVIRONMENT" --activate
