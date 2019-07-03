@@ -44,6 +44,7 @@ then
 fi 
 
 echo "Exported ENVIRONMENT_NAME: ${ENVIRONMENT_NAME}"
+echo "Deploy variables from: ${ENVIRONMENT}"
 echo "----- Deploying: $ECR_NAME to bucket: $AWS_BUCKET -----"
 echo "AWS_DISTRIBUTION: $AWS_DISTRIBUTION"
 echo "AWS_REGION: $AWS_REGION"
