@@ -16,8 +16,6 @@ then
 fi
 
 function getParameter {
-  echo "Fetching '/$1/$2/$3'"
-
   local _val=$(aws ssm get-parameters --region ${ECS_REGION} --names "/$1/$2/$3" --with-decryption --query Parameters[0].Value)
   local _val=`echo ${_val} | sed -e 's/^"//' -e 's/"$//'`
   echo "$_val"
@@ -39,9 +37,12 @@ export BABEL_ENDPOINT=$(getParameter "${ENVIRONMENT}" "common" "BABEL_ENDPOINT")
 
 
 if [[ "$ECR_NAME" = "babel-app" ]]
-then 
+then
+  echo "Exporting ${ENVIRONMENT} $ECR_NAME ZENDESK_KEY"
   export ZENDESK_KEY=$(getParameter "${ENVIRONMENT}" "$ECR_NAME" "ZENDESK_KEY")
+  echo "Exporting ${ENVIRONMENT} $ECR_NAME EMAIL_VALIDATOR_LOCATION"
   export EMAIL_VALIDATOR_LOCATION=$(getParameter "${ENVIRONMENT}" "$ECR_NAME" "EMAIL_VALIDATOR_LOCATION")
+  echo "Exporting ${ENVIRONMENT} $ECR_NAME EMAIL_VALIDATOR_APIKEY"
   export EMAIL_VALIDATOR_APIKEY=$(getParameter "${ENVIRONMENT}" "$ECR_NAME" "EMAIL_VALIDATOR_APIKEY")
 fi 
 
