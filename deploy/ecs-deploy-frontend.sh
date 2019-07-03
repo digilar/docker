@@ -16,6 +16,7 @@ then
 fi
 
 function getParameter {
+  echo "Fetching /$1/$2/$3"
   local _val=$(aws ssm get-parameters --region ${ECS_REGION} --names "/$1/$2/$3" --with-decryption --query Parameters[0].Value)
   local _val=`echo ${_val} | sed -e 's/^"//' -e 's/"$//'`
   echo "$_val"
