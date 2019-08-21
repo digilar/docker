@@ -35,7 +35,13 @@ export CLIENT_SECRET=$(getParameter "${ENVIRONMENT}" "$ECR_NAME" "CLIENT_SECRET"
 export ENVIRONMENT_NAME=${ROOT_ENVIRONMENT}
 export BABEL_ENDPOINT=$(getParameter "${ENVIRONMENT}" "common" "BABEL_ENDPOINT")
 export RECORDED_SPEECH_ENDPOINT=$(getParameter "${ENVIRONMENT}" "$ECR_NAME" "RECORDED_SPEECH_ENDPOINT ")
+export FILE_ENDPOINT=$(getParameter "${ENVIRONMENT}" "$ECR_NAME" "FILE_ENDPOINT")
 
+if [[ "$ECR_NAME" = "arch-cms" ]]
+then
+  echo "Exporting ${ENVIRONMENT} $ECR_NAME FILE_ENDPOINT"
+  export FILE_ENDPOINT=$(getParameter "${ENVIRONMENT}" "$ECR_NAME" "FILE_ENDPOINT")
+fi
 
 if [[ "$ECR_NAME" = "babel-app" ]]
 then
