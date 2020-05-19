@@ -53,6 +53,8 @@ then
   export EMAIL_VALIDATOR_APIKEY=$(getParameter "${ENVIRONMENT}" "$ECR_NAME" "EMAIL_VALIDATOR_APIKEY")
   echo "Exporting ${ENVIRONMENT} $ECR_NAME ILT_API_BASE_URL"
   export ILT_API_BASE_URL=$(getParameter "${ENVIRONMENT}" "$ECR_NAME" "ILT_API_BASE_URL")
+  echo "Exporting ${ENVIRONMENT} $ECR_NAME PUSHER_KEY"
+  export PUSHER_KEY=$(getParameter "${ENVIRONMENT}" "$ECR_NAME" "PUSHER_KEY")
 fi 
 
 echo "Exported ENVIRONMENT_NAME: ${ENVIRONMENT_NAME}"
