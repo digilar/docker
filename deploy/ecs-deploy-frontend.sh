@@ -28,6 +28,8 @@ export API_ENDPOINT=$(getParameter "${ENVIRONMENT}" "common" "API_ENDPOINT")
 export AWS_DISTRIBUTION=$(getParameter "${ENVIRONMENT}" "$ECR_NAME" "CLOUDFRONT_DISTRIBUTION")
 export AWS_BUCKET=$(getParameter "${ENVIRONMENT}" "$ECR_NAME" "S3_BUCKET")
 export AWS_REGION=$(getParameter "${ENVIRONMENT}" "$ECR_NAME" "S3_REGION")
+export KONTO_AUTHORITY=$(getParameter "${ENVIRONMENT}" "$ECR_NAME" "KONTO_AUTHORITY")
+export KONTO_CLIENT_ID=$(getParameter "${ENVIRONMENT}" "$ECR_NAME" "KONTO_CLIENT_ID")
 
 export CLIENT_ID=$(getParameter "${ENVIRONMENT}" "$ECR_NAME" "CLIENT_ID")
 export CLIENT_SECRET=$(getParameter "${ENVIRONMENT}" "$ECR_NAME" "CLIENT_SECRET")
