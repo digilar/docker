@@ -11,13 +11,13 @@ HASH=$4         # Hash for the image version (e.g git commit hash)
 [[ -z "$HASH" ]] && { echo "must pass a hash" ; exit 1; }
 
 function getParameter() {
-  local _val=$(aws ssm get-parameters --region $ECS_REGION --names "/$ENVIRONMENT/$1/$2" --with-decryption --query Parameters[0].Value)
+  local _val=$(aws ssm get-parameters --region $ECS_REGION --names "$1" --with-decryption --query Parameters[0].Value)
   local _val=`echo $_val | sed -e 's/^"//' -e 's/"$//'`
   echo "$_val"
 }
 
 # GLOBAL FOR ENVIRONMENT
-AWS_ACCOUNT_ID=$(getParameter "common" "AWS_ACCOUNT_ID")
+AWS_ACCOUNT_ID=$(getParameter "ACCOUNT_ID")
 
 VERSION=$ENVIRONMENT-$HASH
 
